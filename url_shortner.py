@@ -1,31 +1,19 @@
-import tkinter as tk
 import pyshorteners
-import clipboard
+import pyperclip
+from tkinter import *
 from tkinter import messagebox
-root=tk.Tk()
+root=Tk()
 root.title("URL Shortner")
-root.geometry("400x200")
-root.configure(bg="black")
+root.geometry("500x300")
+root.configure(bg="white")
+root.resizable(0,0)
 def short():
-    try:
-        url=url_entry.get()
-        s=pyshorteners.Shortener()
-        short_url=s.tinyurl.short(url)
-        short_url_entry.insert(0,short_url)
-    except:
-        messagebox.showerror("Error","Please Enter a valid URL")
-def copy():
-    url=short_url_entry.get()
-    clipboard.copy(url)
-    messagebox.showinfo("Success","URL Copied")
-url_label=tk.Label(root,text="Enter URL",font=("Arial",15),bg="black",fg="white")
-url_label.grid(row=0,column=0,padx=10,pady=10)
-url_entry=tk.Entry(root,width=30,font=("Arial",15),bg="black",fg="white")
-url_entry.grid(row=0,column=1,padx=10,pady=10)
-short_btn=tk.Button(root,text="Short",font=("Arial",15),bg="black",fg="white",command=short)
-short_btn.grid(row=1,column=0,padx=10,pady=10)
-short_url_entry=tk.Entry(root,width=30,font=("Arial",15),bg="black",fg="white")
-short_url_entry.grid(row=1,column=1,padx=10,pady=10)
-copy_btn=tk.Button(root,text="Copy",font=("Arial",15),bg="black",fg="white",command=copy)
-copy_btn.grid(row=2,column=0,padx=10,pady=10)
+    url=pyshorteners.Shortener().tinyurl.short(e.get())
+    pyperclip.copy(url)
+    messagebox.showinfo("URL Shortner",f"Shortened URL:{url} is copied to clipboard")
+Label(root,text="URL Shortner",font="arial 20 bold",bg="white",fg="black").pack(pady=10)
+Label(root,text="Enter URL:",font="arial 15 bold",bg="white",fg="black").place(x=10,y=70)
+e=Entry(root,width=40,borderwidth=5)
+e.place(x=150,y=70)
+Button(root,text="Shorten",font="arial 15 bold",bg="white",fg="blue",command=short).place(x=200,y=120)
 root.mainloop()
